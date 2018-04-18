@@ -10,6 +10,7 @@ class Role extends Validate
 {
 	// 验证规则
 	protected $rule = [
+		'id' => 'require|number',
 		'name' => 'require|min:2',
 		'description' => 'require',
 		'roleAttribution' => 'require|in:1,2,3'
@@ -17,6 +18,8 @@ class Role extends Validate
 
 	// 提示信息
 	protected $message = [
+		'id.require' => '角色id必须',
+		'id.number' => '角色id必须为数字',
 		'name.require' => '角色名称必须',
 		'name.min' => '角色名称最小2个字节',
 		'description.require' => '角色描述不能为空',
@@ -28,6 +31,7 @@ class Role extends Validate
 	protected $scene = [
 		'add' => ['name', 'description', 'roleAttribution'],
 		'update' => ['name', 'description', 'roleAttribution'],
+		'delete' => ['id'],
 	];
 
 }

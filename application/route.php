@@ -24,8 +24,9 @@ return [
 	'addRole' => 'admin/User/addRole', // 添加用户角色
 	'saveRole' => 'admin/User/saveRole', // 保存用户角色信息
 	'manageRole' => 'admin/User/queryRole', // 获取用户角色信息
-	'updateRole/:id' => 'admin/User/updateRole', // 更新用户角色信息
+	'updateRole' => 'admin/User/updateRole', // 更新用户角色信息
 	'saveUpdate' => 'admin/User/saveUpdate', // 更新用户角色信息
+	'deleteRole' => 'admin/User/deleteRole', // 删除用户角色信息
 ];
 
 

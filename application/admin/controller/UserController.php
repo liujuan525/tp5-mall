@@ -85,47 +85,77 @@ class UserController extends PublicController
 	}
 
 	/**
+	 * 删除角色信息 -> lj [2018/04/18]
+	 */
+	public function deleteRole()
+	{
+		$data = $this -> getParameter(['id']);
+		// 验证数据
+		$result = $this -> validate($data, 'Role.delete');
+		// 验证不通过，返回错误信息
+		if (true !== $result) {
+			return json(['status' => 10016,'msg' => $result]);
+		}
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		$data['isDel'] = 2;
+		$result = $this -> updateInfo($data);
+		return $result;
+	}
+
+	/**
 	 * 编辑角色信息 -> lj [2018/04/17]
 	 */
-	// public function updateRole()
-	public function updateRole($id)
+	public function updateRole()
 	{
+		$data = $this -> getParameter(['id']);
 		$role = Db::table('mall_user_role')
-					-> where('id', $id)
+					-> where('id', $data['id'])
 					-> find();
 		if (!$role) {
-			return json(['status' => 10013, 'msg' => $id, 'info' => $id]);
-			// return json(['status' => 10013, 'msg' => '角色信息不存在无法修改!', 'info' => $id]);
+			return json(['status' => 10013, 'msg' => '角色信息不存在无法修改!', 'data' => $data]);
 		}
 		// 分配角色信息
 		$this -> assign('role', $role);
 		return $this -> fetch();
 	}
 
+	/**
+	 * 保存角色修改 -> lj [2018/04/17]
+	 */
 	public function saveUpdate()
 	{
-		$data = $this -> getParameter(['id', 'name', 'description', 'roleAttribution']);
-		// 验证数据
-		$result = $this -> validate($data, 'Role.update');
-		// 验证不通过，返回错误信息
-		if (true !== $result) {
-			return json(['status' => 10014,'msg' => $result]);
-		}
-		// 更新记录时间
-		$data = $this -> updateTime($data);
-		// 更新角色信息
+			return json(['status' => 10014,'msg' => 'url测试']);
+
+
+
+		// $data = $this -> getParameter(['id', 'name', 'description', 'roleAttribution']);
+		// // 验证数据
+		// $result = $this -> validate($data, 'Role.update');
+		// // 验证不通过，返回错误信息
+		// if (true !== $result) {
+		// 	return json(['status' => 10014,'msg' => $result]);
+		// }
+		// // 更新记录时间
+		// $data = $this -> updateTime($data);
+		// // 更新角色信息
+		// $result = $this -> updateInfo($data);
+		// return json($result);
+	}
+
+	/**
+	 * 更新信息 -> lj [2018/04/16]
+	 */
+	private function updateInfo($data)
+	{
 		$updateResult = Db::table('mall_user_role')
-							-> update([$data]);
+							-> update($data);
 		if ($updateResult) {
 			return ['status' => 1,'msg' => '更新成功','data' => $data['id']];
 		} else {
 			return ['status' => 10015,'msg' => '更新角色失败!','data' => $data];
 		}
-		return json($result);
 	}
-
-
-
 
 
 
