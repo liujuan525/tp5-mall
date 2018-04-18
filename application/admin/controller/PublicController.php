@@ -54,6 +54,34 @@ class PublicController extends Controller
         return $data;
     }
 
+    /**
+     * 校验手机号码 -> lj [2018/04/18]
+     */
+    public function isMobile($mobile)
+    {
+        $result = preg_match('/^(13[0-9]|15[012356789]|17[01678]|18[0-9]|14[57])[0-9]{8}$/', $mobile);
+        if (!$result) {
+            return json(['status' => 10015, 'msg' => '手机号格式错误']);
+        }
+    }
+
+    /**
+     * 字符串加密 -> lj [2018/04/18]
+     */
+    public function encryptString($string)
+    {
+        $salt = '6BSSDFB65257FCAB4E2975CD96B230F7FSDFC4B53D97C10B6';
+        return strtoupper(md5(sha1(md5($string.$salt)).$string));
+    }
+
+    /**
+     * [unique 获取唯一值(大写)]
+     */
+    public static function unique()
+    {
+        $key = mt_rand(1,99999).uniqid('juanblog',true).time();
+        return strtoupper(md5(md5($key)));
+    }
 
 
 

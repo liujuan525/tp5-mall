@@ -29,8 +29,10 @@ return [
 	'deleteRole' => 'admin/Role/deleteRole', // 删除用户角色信息
 	// UserController
 	'addUser' => 'admin/User/addUser', // 添加用户
-
-
+	'insertUser' => 'admin/User/insertUser', // 添加用户
+	'userList' => 'admin/User/userList', // 用户列表
+	'stopUsing' => 'admin/User/stopUsing', // 更改用户状态为禁用
+	'startUsing' => 'admin/User/startUsing', // 更改用户状态为启用
 
 
 

@@ -41,18 +41,18 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="password" class="input-text" autocomplete="off"  placeholder="请再次确认密码" id="password2" name="password2">
+			<input type="password" class="input-text" autocomplete="off"  placeholder="请再次确认密码" id="repassword" name="repassword">
 		</div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 			<div class="radio-box">
-				<input name="sex" type="radio" id="sex-1" checked>
+				<input name="sex" value="1" type="radio" id="sex-1">
 				<label for="sex-1">男</label>
 			</div>
 			<div class="radio-box">
-				<input type="radio" id="sex-2" name="sex">
+				<input type="radio" value="2" id="sex-2" name="sex">
 				<label for="sex-2">女</label>
 			</div>
 		</div>
@@ -72,24 +72,29 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3">角色：</label>
 		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select class="select" name="adminRole" size="1">
-				<option value="0">超级管理员</option>
-				<option value="1">总编</option>
-				<option value="2">栏目主辑</option>
-				<option value="3">栏目编辑</option>
+
+
+			<select id="select" class="select" name="adminRole" size="1">
+				{volist name="role" id="info"}
+				<option value="{$info.id}">{$info.description}</option>
+				{/volist}
+				<!-- <option value="1">总编</option> -->
+				<!-- <option value="2">栏目主辑</option> -->
+				<!-- <option value="3">栏目编辑</option> -->
 			</select>
+
 			</span> </div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3">备注：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+			<textarea id="description" name="" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true"></textarea>
 			<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 		</div>
 	</div>
 	<div class="row cl">
 		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			<button id="admin-user-add" class="btn btn-primary radius" type="submit"><i class="icon-ok"></i> 提交</button>
 		</div>
 	</div>
 	</form>
@@ -105,7 +110,60 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script> 
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script> 
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script> 
+
 <script type="text/javascript">
+	$(function(){
+		$('#admin-user-add').on('click', function(){
+			var userName = $("#adminName").val();
+			var password = $("#password").val();
+			var repassword = $("#repassword").val();
+			var gender = $("input[type='radio']:checked").val();
+			var mobile = $("#phone").val();
+			var email = $("#email").val();
+			var roleId = $("#select option:selected").val();
+			var description = $("#description").val();
+
+			var url = 'insertUser';
+			var postData = {
+				userName: userName,
+				password: password,
+				repassword: repassword,
+				gender: gender,
+				mobile: mobile,
+				email: email,
+				roleId: roleId,
+				description: description,
+			};
+			console.log(postData);
+
+			$.post(
+				url,
+				postData,
+				function(res){
+					if (res.status == 1) {
+						alert(res.msg);
+						location.href = 'userList'; // 用户列表
+					} else {
+						alert(res.msg);
+					}
+				},'json')
+			return false;
+		});
+
+	});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- <script type="text/javascript">
 $(function(){
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
@@ -113,7 +171,7 @@ $(function(){
 		increaseArea: '20%'
 	});
 	
-	$("#form-admin-add").validate({
+	$("#getParameter").validate({
 		rules:{
 			adminName:{
 				required:true,
@@ -162,7 +220,7 @@ $(function(){
 		}
 	});
 });
-</script> 
+</script>  -->
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>

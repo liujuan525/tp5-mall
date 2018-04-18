@@ -80,7 +80,7 @@ class RoleController extends PublicController
 		$count = count($info);
 		$this -> assign('count', $count);
 		$this -> assign('info', $info);
-		return $this -> fetch();
+		return $this -> fetch(); // $this->view->assign()
 	}
 
 	/**
