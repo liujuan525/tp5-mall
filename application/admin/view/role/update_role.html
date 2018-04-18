@@ -9,39 +9,39 @@
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link rel="Bookmark" href="/favicon.ico" >
 <link rel="Shortcut Icon" href="/favicon.ico" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
 <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="__LIB__/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
 <!--/meta 作为公共模版分离出去-->
 
-<title>添加角色 - 后台管理管理</title>
+<title>编辑角色 - 后台管理管理</title>
 </head>
 <body>
 <article class="page-container">
-	<h2 align="center">请添加角色</h2>
-	<form action="" method="post" class="form form-horizontal" id="form-admin-role-add"">
+	<h2 align="center">请编辑角色</h2>
+	<form action="" method="post" class="form form-horizontal" id="form-admin-role-add">
+
+		<!-- 角色id -->
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色id：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" disabled value="{$role.id ? $role.id : ''}" placeholder="角色id" id="roleId" name="roleId">
+			</div>
+		</div>
 		<!-- 角色名称 -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="请填写角色名称" id="roleName" name="roleName">
+				<input type="text" class="input-text" value="{$role.name ? $role.name : ''}" placeholder="请填写角色名称" id="roleName" name="roleName">
 			</div>
 		</div>
 	<!-- 角色描述 -->
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="请填写角色描述" id="description" name="description">
+				<input type="text" class="input-text" value="{$role.description ? $role.description : ''}" placeholder="请填写角色描述" id="description" name="description">
 			</div>
 		</div>
 <!-- 角色归属 -->
@@ -50,15 +50,14 @@
 			<div class="formControls col-xs-8 col-sm-9">
 				<dl class="cl permission-list2">
 					<dd>
-						<label class="">
-							<input type="radio" value="1" name="user-Character-1-0-0" id="user-Character-1-0-0">
-							用户</label>
-						<label class="">
-							<input type="radio" value="2" name="user-Character-1-0-0" id="user-Character-1-0-1">
-							商家</label>
-						<label class="">
-							<input type="radio" value="3" name="user-Character-1-0-0" id="user-Character-1-0-2">
-							后台</label>
+		
+						<input type="radio" {$role.roleAttribution == 1 ? 'checked' :''} value="1" name="user-Character-1-0-0" id="user-Character-1-0-0">
+						用户
+						<input type="radio" {$role.roleAttribution == 2 ? 'checked' :''} value="2" name="user-Character-1-0-0" id="user-Character-1-0-1">
+						商家
+						<input type="radio" {$role.roleAttribution == 3 ? 'checked' :''} value="3" name="user-Character-1-0-0" id="user-Character-1-0-2">
+						后台
+
 					</dd>
 				</dl>
 			</div>
@@ -66,22 +65,31 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 				<!-- <input type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"> -->
-				<button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 提交</button>
+				<button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 提交</button>
 			</div>
 		</div>
-	</form>
+	</form> 
 </article>
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="__STATIC__/h-ui/js/H-ui.min.js"></script> 
-<script type="text/javascript" src="__STATIC__/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__STATIC__/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
 
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
 
+<script type="text/javascript">
+	window.onload = function() {
+		var submit = document.getElementById("admin-role-save");
+		submit.onclick = function(event) {
+			return false;
+		}
+	}
+</script>
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript">
 	$(function(){
@@ -89,6 +97,8 @@
 		$('#admin-role-save').on('click', function() {
 			// 获取角色名称
 			var roleName = $('#roleName').val();
+			// 获取角色id
+			var roleId = $('#roleId').val();
 			// 获取角色描述
 			var description = $('#description').val();
 			// 获取角色归属
@@ -96,8 +106,14 @@
 			console.log(roleType);
 			console.log(description);
 			console.log(roleName);
+			console.log(roleId);
+
 			var typeArray = ["1","2","3"];
 			// 校验数据
+			if (!roleId) {
+				alert('角色id不能为空!');
+				return false;
+			}
 			if (!roleName) {
 				alert('角色名不能为空!');
 				return false;
@@ -113,28 +129,29 @@
 
 			// 判断一个元素是否在数组中，不存在时返回-1   roleType为字符串
 			var index = $.inArray(roleType, typeArray);
-			console.log(index);
 			if (index < 0) {
 				alert('角色归属类型错误!');
 				return false;
 			}
 
 			// 请求数据
-	        var url = 'saveRole';
+	        var url = "{:url('/saveUpdate')}";
 	        var postData = {
 	            name:roleName,
 	            roleAttribution:roleType,
-	            description:description
+	            description:description,
+	            id:roleId
 	        };
+
+	        console.log(postData);
 
 			$.post(
 				url,
 				postData,
 				function(res){
 					if (res.status == 1) {
-						alert(res.msg);
 						console.log(res.data);
-						location.href = 'index';
+						location.href = "{:url('/manageRole')}";
 					}else{
 						alert(res.msg);
 						console.log(res.data);
