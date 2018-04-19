@@ -28,6 +28,7 @@ return [
 	'updateRole' => 'admin/Role/updateRole', // 更新用户角色信息
 	'saveUpdate' => 'admin/Role/saveUpdate', // 更新用户角色信息
 	'deleteRole' => 'admin/Role/deleteRole', // 删除用户角色信息
+	'batchDelete' => 'admin/Role/batchDelete', // 批量删除角色信息
 	// UserController
 	'addUser' => 'admin/User/addUser', // 添加用户
 	'insertUser' => 'admin/User/insertUser', // 添加用户

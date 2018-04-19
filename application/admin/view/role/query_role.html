@@ -23,7 +23,8 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray"> 
 		<span class="l"> 
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+			<!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  -->
 			<a class="btn btn-primary radius" href="addRole" _onclick="admin_role_add('添加角色','add_role.html','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> 
 		</span> 
 	</div>
@@ -33,7 +34,7 @@
 				<th scope="col" colspan="6">角色管理</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox" value="{}" name=""></th>
+				<th width="25"><input type="checkbox" value="" name=""></th>
 				<th width="40">ID</th>
 				<th width="200">角色名</th>
 				<th>角色归属</th>
@@ -46,7 +47,7 @@
 			<!-- 循环遍历数据 -->
 			{volist name="info" id="role" empty="暂时没有数据"}
 			<tr class="text-c">
-				<td><input type="checkbox" value="" name=""></td>
+				<td><input type="checkbox" name="ids" value="{$role.id}" class="role"></td>
 				<td id="roleId" value="{$role.id}"> {$role.id} </td>
 				<td> {$role.name} </td>
 				<td><a href="#"> 
@@ -70,7 +71,7 @@
 	</table>
 </div>
 <!-- 分页 -->
-<div class="cl pd-5 bg-1 bk-gray pagelist"> 
+<div class="pagelist"> 
 	<span class="r">
 		{$info -> render()}
 	</span>
@@ -85,6 +86,39 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
+	/**
+	 * 批量删除
+	 */
+	function datadel()
+	{
+		var idArray = new Array();
+		 // var result = document.getElementsByName('ids');
+		 var result =$("input[name='ids']:checked");
+		 // 循环遍历数组
+		 for (var i=0; i< result.length; i++) {
+		 	// 将id放入数组中
+		 	idArray.push(result[i].value);
+		 	// idArray[i] = result[i].value;
+		 	// console.log(result[i].value);
+		 }
+		 console.log(idArray);
+		 // 将数组转换为字符串
+		 var idString = idArray.join(',');
+		$.post(
+			'batchDelete',
+			{ids:idString},
+			function(res){
+				if (res.status == 1){
+					console.log(res.data);
+					location.reload();
+				}else{
+					alert(res.msg);
+					console.log(res.data);
+				}
+			},'json')
+	}
+
+
 	/*管理员-角色-添加*/
 	function admin_role_add(title,url,w,h){
 		layer_show(title,url,w,h);

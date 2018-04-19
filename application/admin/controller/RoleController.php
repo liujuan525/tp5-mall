@@ -150,6 +150,29 @@ class RoleController extends PublicController
 		}
 	}
 
+	/**
+	 * 批量删除角色 -> lj [2018/04/19]
+	 */
+	public function batchDelete()
+	{
+		$data = $this -> getParameter(['ids']);
+		$ids = explode(',', $data['ids']);
+		$data['isDel'] = 2; // 删除
+		unset($data['ids']);
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		// 删除数据
+		$result = Db::table('mall_role_info')
+					-> where('id', 'in', $ids)
+					-> update($data);
+		if ($result) {
+			return ['status' => 1,'msg' => '删除成功','data' => $ids];
+		} else {
+			$this -> success('删除失败', '/manageRole');
+		}
+
+	}
+
 
 
 
