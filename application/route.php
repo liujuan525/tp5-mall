@@ -17,6 +17,7 @@ return [
 	/**
 	 * admin后台模块相关路由
 	 */
+	// IndexController
 	'register' => 'admin/Index/register', // 用户注册
 	'login' => 'admin/Index/login', // 用户登录
 	'welcome' => 'admin/Index/welcome', // 欢迎页面
@@ -33,6 +34,9 @@ return [
 	'userList' => 'admin/User/userList', // 用户列表
 	'stopUsing' => 'admin/User/stopUsing', // 更改用户状态为禁用
 	'startUsing' => 'admin/User/startUsing', // 更改用户状态为启用
+	'deleteUser' => 'admin/User/deleteUser', // 删除用户
+	'updateUser' => 'admin/User/updateUser', // 更新用户信息
+	'saveUser' => 'admin/User/saveUser', // 更新用户信息
 
 
 

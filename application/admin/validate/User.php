@@ -17,6 +17,8 @@ class User extends Validate
 		'mobile' => 'require',
 		'email' => 'require|email',
 		'userAttribution' => 'require',
+		'gender' => 'require|number',
+		'roleId' => 'require|number',
 	];
 
 	// 验证信息
@@ -33,11 +35,17 @@ class User extends Validate
 		'email.require' => '邮箱不能为空',
 		'email.email' => '邮箱格式错误',
 		'userAttribution.require' => '用户归属不能为空',
+		'gender.require' => '性别不能为空',
+		'gender.number' => '性别必须为数字',
+		'roleId.require' => '角色id不能为空',
+		'roleId.number' => '角色id必须为数字',
 	];
 
 	// 验证场景
 	protected $scene = [
 		'add' => ['userName', 'password', 'repassword', 'mobile', 'email', 'userAttribution'],
+		'update' => ['id', 'userName', 'mobile', 'email', 'gender', 'roleId'],
+		'delete' => ['id'],
 	];
 
 

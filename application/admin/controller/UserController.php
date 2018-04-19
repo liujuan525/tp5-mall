@@ -6,31 +6,19 @@
 namespace app\admin\controller;
 
 use app\admin\controller\PublicController;
+use think\Request;
 use think\Validate;
 use think\Db;
 
 class UserController extends PublicController
 {
-	protected $user;
-
-	/**
-	 * 构造函数
-	 */
-	public function __construct()
-	{
-		// $this -> user = Db::table('mall_user_info');
-	}
-
 	/**
 	 * 添加用户 -> lj [2018/04/18]
 	 */
 	public function addUser()
 	{
 		// 获取角色信息
-		$role = Db::table('mall_role_info')
-					-> where('roleAttribution', 3) // 后台
-					-> select();
-		//$view -> assign('role', $role);
+		$role = $this -> getRole();
 		return view('add_user', ['role'=> $role]);
 	}
 
@@ -78,7 +66,8 @@ class UserController extends PublicController
 	{
 		// 获取用户信息
 		$userInfo = Db::table('mall_user_info')
-					-> where('userAttribution', 3)
+					-> where('userAttribution', 3) // 后台用户
+					-> where('isDel', 1) // 未删除
 					-> select();
 		$count = count($userInfo); // 用户总数
 		// 获取角色描述
@@ -97,15 +86,65 @@ class UserController extends PublicController
 	public function stopUsing()
 	{
 		$data = $this -> getParameter(['id']);
-		$info = Db::table('mall_user_info')
-					-> where('id', $data['id'])
-					-> find();
-		if (!$info) {
-			return json(['status' => 10013, 'msg' => '用户信息不存在无法修改!', 'data' => $data]);
-		}
+		// 查询用户信息
+		$this -> findUserById($data['id']);
 		$data['userStatus'] = 3; // 禁用
 		// 更新记录时间
 		$data = $this -> updateTime($data);
+		$this -> updateUserInfo($data);
+	}
+
+	/**
+	 * 更改用户状态为启用 -> lj [2018/04/18]
+	 */
+	public function startUsing()
+	{
+		$data = $this -> getParameter(['id']);
+		// 查询用户信息
+		$this -> findUserById($data['id']);
+		$data['userStatus'] = 1; // 启用
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		$this -> updateUserInfo($data);
+	}
+
+	/**
+	 * 删除用户 -> lj [2018/04/18]
+	 */
+	public function deleteUser()
+	{
+		$data = $this -> getParameter(['id']);
+		// 校验数据
+		$result = $this -> validate($data, 'User.delete');
+		if ($result !== true) {
+			return json(['status' => 10010, 'msg' => $result]);
+		}
+		// 查询用户信息
+		$this -> findUserById($data['id']);
+		$data['isDel'] = 2;
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		$this -> updateUserInfo($data);
+	}
+
+	/**
+	 * 根据id查询用户信息 -> lj [2018/04/18]
+	 */
+	private function findUserById($id)
+	{
+		$info = Db::table('mall_user_info')
+					-> where('id', $id)
+					-> find();
+		if (!$info) {
+			return json(['status' => 10013, 'msg' => '用户信息不存在!', 'data' => $id]);
+		}
+	}
+
+	/**
+	 * 更新用户信息 -> lj [2018/04/18]
+	 */
+	private function updateUserInfo($data)
+	{
 		$updateResult = Db::table('mall_user_info') -> update($data);
 		if ($updateResult) {
 			return $this -> success('更新成功!', '/userList');
@@ -115,29 +154,56 @@ class UserController extends PublicController
 	}
 
 	/**
-	 * 更改用户状态为启用 -> lj [2018/04/18]
+	 * 获取后台角色信息 -> lj [2018/04/18]
 	 */
-	public function startUsing()
+	private function getRole()
 	{
-		$data = $this -> getParameter(['id']);
-		$info = Db::table('mall_user_info')
-					-> where('id', $data['id'])
-					-> find();
-		if (!$info) {
-			return json(['status' => 10013, 'msg' => '用户信息不存在无法修改!', 'data' => $data]);
-		}
-		$data['userStatus'] = 1; // 启用
-		// 更新记录时间
-		$data = $this -> updateTime($data);
-		$updateResult = Db::table('mall_user_info') -> update($data);
-		if ($updateResult) {
-			return $this -> success('更新成功!', '/userList');
-		} else {
-			return $this -> error('更新失败!', '/userList');
-		}
+		$role = Db::table('mall_role_info')
+					-> where('roleAttribution', 3) // 后台
+					-> select();
+		return $role;
 	}
 
+	/**
+	 * 更新用户信息 -> lj [2018/04/18]
+	 */
+	public function updateUser()
+	{
+		$data = $this -> getParameter(['id']);
+		// 查询用户信息
+		$this -> findUserById($data['id']);
+		$user = Db::table('mall_user_info')
+					-> where('id', $data['id'])
+					-> find();
+		// 获取角色信息
+		$role = $this -> getRole();
+		return view('update_user', ['role' => $role, 'user' => $user]);
+	}
 
+	/**
+	 * 保存用户更新 -> lj [2018/04/18]
+	 */
+	public function saveUser()
+	{
+		$data = $this -> getParameter(['id', 'userName', 'gender', 'mobile', 'email', 'roleId', 'description']);
+		// 校验信息
+		$result = $this -> validate($data, 'User.update');
+		if ($result !== true) {
+			return json(['status' => 10014, 'msg' => $result]);
+		}
+		// 查询用户信息
+		$this -> findUserById($data['id']);
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		// 更新用户信息
+		// $this -> updateUserInfo($data);
+		$updateResult = Db::table('mall_user_info') -> update($data);
+		if ($updateResult) {
+			return ['status' => 1,'msg' => '更新成功','data' => $data['id']];
+		} else {
+			return ['status' => 10015,'msg' => '更新角色失败!','data' => $data];
+		}
+	}
 
 
 }
