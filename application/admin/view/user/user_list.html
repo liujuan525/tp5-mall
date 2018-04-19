@@ -44,7 +44,6 @@
 
 			<a href="addUser" _onclick="admin_add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
 		</span> 
-			<span class="r">共有数据：<strong> {$count} </strong> 条</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
@@ -96,6 +95,12 @@
 			{/volist}
 		</tbody>
 	</table>
+</div>
+<!-- 分页 -->
+<div class="cl pd-5 bg-1 bk-gray pagelist"> 
+	<span class="r">
+		{$userInfo -> render()}
+	</span>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script> 

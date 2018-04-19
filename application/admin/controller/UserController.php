@@ -68,8 +68,7 @@ class UserController extends PublicController
 		$userInfo = Db::table('mall_user_info')
 					-> where('userAttribution', 3) // 后台用户
 					-> where('isDel', 1) // 未删除
-					-> select();
-		$count = count($userInfo); // 用户总数
+					-> paginate(1); // 每页1条数据
 		// 获取角色描述
 		foreach ($userInfo as $key=>&$user) {
 			$info = Db::table('mall_role_info')
@@ -77,7 +76,7 @@ class UserController extends PublicController
 						-> find();
 			$user['roleId'] = $info['description'];
 		}
-		return view('user_list', ['userInfo' => $userInfo, 'count' => $count]);
+		return view('user_list', ['userInfo' => $userInfo]);
 	}
 
 	/**

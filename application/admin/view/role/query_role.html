@@ -26,14 +26,14 @@
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
 			<a class="btn btn-primary radius" href="addRole" _onclick="admin_role_add('添加角色','add_role.html','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> 
 		</span> 
-		<span class="r">共有数据：<strong> {$count} </strong> 条</span> </div>
+	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
 			<tr>
 				<th scope="col" colspan="6">角色管理</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox" value="" name=""></th>
+				<th width="25"><input type="checkbox" value="{}" name=""></th>
 				<th width="40">ID</th>
 				<th width="200">角色名</th>
 				<th>角色归属</th>
@@ -66,10 +66,16 @@
 				</td>
 			</tr>
 			{/volist}
-
 		</tbody>
 	</table>
 </div>
+<!-- 分页 -->
+<div class="cl pd-5 bg-1 bk-gray pagelist"> 
+	<span class="r">
+		{$info -> render()}
+	</span>
+</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
@@ -120,5 +126,6 @@
 		});
 	}
 </script>
+
 </body>
 </html>

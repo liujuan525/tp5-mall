@@ -76,9 +76,7 @@ class RoleController extends PublicController
 	{
 		$info = Db::table('mall_role_info')
 					-> where('isDel', 1)
-					-> select();
-		$count = count($info);
-		$this -> assign('count', $count);
+					-> paginate(2); // 每页两条数据
 		$this -> assign('info', $info);
 		return $this -> fetch(); // $this->view->assign()
 	}
