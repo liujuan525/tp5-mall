@@ -170,7 +170,6 @@ class RoleController extends PublicController
 		} else {
 			$this -> success('删除失败', '/manageRole');
 		}
-
 	}
 
 

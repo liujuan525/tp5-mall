@@ -64,12 +64,13 @@
 		<tbody>
 			{volist name='userInfo' id='user'}
 			<tr class="text-c">
-				<td><input type="checkbox" value="1" name=""></td>
+				<td><input type="checkbox" value="{$user.id}" name="ids"></td>
 				<td> {$user.id} </td>
 				<td> {$user.userName} </td>
 				<td> {$user.mobile} </td>
 				<td> {$user.email} </td>
-				<td> {$user.roleId} </td>
+				<td> {$user.description} </td>
+				<!-- <td> {$user.roleId} </td> -->
 				<td> {$user.addTime} </td>
 				<td class="td-status"><span class="label label-success radius">
 					{switch name="$user.userStatus"}
@@ -97,7 +98,7 @@
 	</table>
 </div>
 <!-- 分页 -->
-<div class="cl pd-5 bg-1 bk-gray pagelist"> 
+<div class="pagelist"> 
 	<span class="r">
 		{$userInfo -> render()}
 	</span>
@@ -121,6 +122,39 @@
 	w		弹出层宽度（缺省调默认值）
 	h		弹出层高度（缺省调默认值）
 */
+/**
+ * 批量删除 -> lj [2018/04/19]
+ */
+function datadel()
+{
+	// 获取用户id
+	var userId = $("input[name='ids']:checked");
+	// console.log(userId);
+	var ids = new Array();
+	for (var i=0; i < userId.length; i++)
+	{
+		ids.push(userId[i].value)
+	}
+	console.log(ids);
+	ids = ids.join(','); // 将数组转换为字符串
+
+	$.post(
+		'batchDeleteUser',
+		{id: ids},
+		function(res){
+			if (res.status == 1){
+				console.log(res.data);
+				location.reload();
+			} else {
+				alert(res.msg);
+				console.log(res.data);
+			}
+		}
+	);
+}
+
+
+
 /*管理员-增加*/
 function admin_add(title,url,w,h){
 	layer_show(title,url,w,h);

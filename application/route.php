@@ -38,7 +38,7 @@ return [
 	'deleteUser' => 'admin/User/deleteUser', // 删除用户
 	'updateUser' => 'admin/User/updateUser', // 更新用户信息
 	'saveUser' => 'admin/User/saveUser', // 更新用户信息
-
+	'batchDeleteUser' => 'admin/User/batchDeleteUser', // 批量删除用户
 
 
 

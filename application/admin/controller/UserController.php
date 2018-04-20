@@ -68,13 +68,14 @@ class UserController extends PublicController
 		$userInfo = Db::table('mall_user_info')
 					-> where('userAttribution', 3) // 后台用户
 					-> where('isDel', 1) // 未删除
-					-> paginate(1); // 每页1条数据
+					-> paginate(2); // 每页1条数据
 		// 获取角色描述
 		foreach ($userInfo as $key=>&$user) {
 			$info = Db::table('mall_role_info')
 						-> where('id', $user['roleId'])
 						-> find();
-			$user['roleId'] = $info['description'];
+			// $user['roleId'] = $info['description'];
+			$user['description'] = $info['description'];
 		}
 		return view('user_list', ['userInfo' => $userInfo]);
 	}
@@ -203,6 +204,31 @@ class UserController extends PublicController
 			return ['status' => 10015,'msg' => '更新角色失败!','data' => $data];
 		}
 	}
+
+	/**
+	 * 批量删除用户 -> lj [2018/04/20]
+	 */
+	public function batchDeleteUser()
+	{
+		$data = $this -> getParameter(['id']);
+		$data['id'] = explode(',', $data['id']);
+		$data['isDel'] = 2; // 删除
+		// 更新记录时间
+		$data = $this -> updateTime($data);
+		$result = Db::table('mall_user_info')
+						-> where('id', 'in', $data['id'])
+						-> update($data);
+
+		return ['status' => 1,'msg' => '更新成功','data' => $data['id']];
+		if ($result) {
+			return ['status' => 1,'msg' => '删除成功','data' => $data['id']];
+		} else {
+			$this -> success('删除失败', '/userList');
+		}
+	}
+
+
+
 
 
 }
