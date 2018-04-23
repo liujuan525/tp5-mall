@@ -64,20 +64,32 @@ class UserController extends PublicController
 	 */
 	public function userList()
 	{
+		$map = array();
+		if (input('time_start')) {
+			$map['addTime'] = array('egt', input('time_start').' 00:00:00');
+		}
+		if (input('time_end')) {
+			$map['addTime'] = array('elt', input('time_end').' 00:00:00');
+		}
+		if (input('username')) {
+			$map['userName'] = array('eq', input('username'));
+		}
+		$map['isDel'] = 1; // 未删除
+		$map['userAttribution'] = 3;// 后台用户
+
 		// 获取用户信息
 		$userInfo = Db::table('mall_user_info')
-					-> where('userAttribution', 3) // 后台用户
-					-> where('isDel', 1) // 未删除
+					-> where($map)
 					-> paginate(2); // 每页1条数据
 		// 获取角色描述
 		foreach ($userInfo as $key=>&$user) {
 			$info = Db::table('mall_role_info')
 						-> where('id', $user['roleId'])
 						-> find();
-			// $user['roleId'] = $info['description'];
 			$user['description'] = $info['description'];
 		}
-		return view('user_list', ['userInfo' => $userInfo]);
+		$page = $userInfo -> render(); // 分页
+		return view('user_list', ['userInfo' => $userInfo, 'page' => $page]);
 	}
 
 	/**
@@ -226,6 +238,45 @@ class UserController extends PublicController
 			$this -> success('删除失败', '/userList');
 		}
 	}
+
+	/**
+	 * 筛选用户信息(根据日期或者用户名) -> lj [2018/04/20]
+	 */
+// 	public function queryUser()
+// 	{
+// 		$data = input('param.'); // 获取所有参数 -> 参数值可为空
+
+// 		$map = array();
+// 		if ($data['time_start']) {
+// 			$map['addTime'] = array('egt', $data['time_start'].' 00:00:00');
+// 		}
+// 		if ($data['time_end']) {
+// 			$map['addTime'] = array('elt', $data['time_end'].' 00:00:00');
+// 		}
+// 		if ($data['username']) {
+// 			$map['userName'] = array('eq', $data['username']);
+// 		}
+// dump($map);die;
+// 		// if ($data['username']) {
+// 		// 	$userInfo = Db::table('mall_user_info')
+// 		// 			-> where($map)
+// 		// 			-> paginate(2);
+// 		// 			// -> select();
+// 		// } else {
+// 			$userInfo = Db::table('mall_user_info')
+// 					-> where($map)
+// 					-> paginate(2);
+// 					// -> select();
+// 		// }
+// 		$page = $userInfo -> render();
+// 		// return view('user_list', ['userInfo' => $userInfo, 'page' => $page]);
+// 		$this -> assign('userInfo', $userInfo);
+// 		return ['status' => 1,'msg' => '查询成功','data' => $userInfo];
+// 	}
+
+
+
+
 
 
 
