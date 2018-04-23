@@ -41,7 +41,8 @@ return [
 	'batchDeleteUser' => 'admin/User/batchDeleteUser', // 批量删除用户
 	'queryUser' => 'admin/User/queryUser', // 搜索用户
 
-
+	// TestController
+	'baiduMap' => 'admin/Test/index',
 
 
 ];
