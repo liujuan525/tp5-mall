@@ -19,13 +19,21 @@ class TestController extends PublicController
     }
 
     /**
+     * 百度地图测试
+     */
+    public function test()
+    {
+        return \Map::staticimage('北京昌平');
+    }
+
+    /**
      * 显示创建资源表单页.
      *
      * @return \think\Response
      */
     public function create()
     {
-        return \Map::staticimage('北京昌平');
+        //
     }
 
     /**
