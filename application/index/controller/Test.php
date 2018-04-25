@@ -23,7 +23,20 @@ class Test extends Controller
      */
     public function captcha()
     {
-        return $this -> fetch();
+        // 如果是post提交则校验信息
+        if (request() -> isPost()) {
+            // 获取post提交的数据
+            $data = input('post.');
+            $result = captcha_check($data['captcha']);
+            if ($result) {
+                $this -> success('验证成功');
+            } else {
+                $this -> error('验证码错误');
+            }
+        } else {
+            // 否则展示页面
+            return $this -> fetch();
+        }
     }
 
     /**

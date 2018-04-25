@@ -2,75 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
- 	<title>多选</title>
+ 	<title>验证码</title>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-	<h4>默认全选; 如果去掉其中一个,全选勾去掉;三个单选，选上之后全选自动打勾;获取勾选的多选框的value值</h4>
-	<table>
-	    <tr>
-	        <td><input type="checkbox" id="all" value="0" />全选</td>
-	    </tr>
-		<tr>
-	        <td><input type="checkbox" class="fruit" value="1"/>苹果</td>
-	    </tr>
-	    <tr>
-			<td><input type="checkbox" class="fruit" value="2"/>香蕉</td>
-	    </tr>
-	    <tr>
-	        <td><input type="checkbox" class="fruit" value="3"/>鸭梨</td>
-	    </tr>
-	</table>
-	<input type="submit" id="submit" name="submit">
+	<form method="post" action="{:url('test/captcha')}">
+		<h4> thinkphp5 验证码 </h4>
+		<div>
+			<input type="text" name="captcha" placeholder="请输入验证码"/>
+		</div>
+		<!-- 获取验证码图片 -->
+		<div>
+			<img src="{:captcha_src()}" onclick="this.src=this.src+'?'+Math.random()">
+		</div>
+		<input type="submit" name="tijiao">
+	</form>
 </body>
-
-<script type="text/javascript">
-	// 默认全选
-	$(function() {
-		$("input[type='checkbox']").attr('checked', true);
-	})
-	// 设置全选或者全部选
-	$("#all").click(function() {
-		if (this.checked) {
-			// 全部勾选
-			$("input[type='checkbox']").each(function() {
-				$(this).prop("checked", true);
-			});
-		} else {
-			// 取消勾选
-			$("input[type='checkbox']").each(function() {
-				$(this).removeAttr("checked", false);
-			});
-		}
-	});
-	// 如果清空子选框的勾选，则将全部选项框取消勾选/如果子选框全部勾选，则将全选按钮勾选
-	$("input[class='fruit']").change(function() {
-		if ($("input[class='fruit']").not("input:checked").size() < 0) {
-			// 全选勾选
-			$("#all").attr('checked', true);
-		} else if ($("input[class='fruit']").not("input:checked").size() > 0){
-			// 不是全选
-			$("#all").attr('checked', false);
-		} else {
-			// 全选勾选  -> 子选框全部勾选
-			$("#all").prop('checked', true);
-		}
-	});
-	// 提交取值
-	$("#submit").click(function() {
-		// 获取选中的多选框的值
-		var selectValue = new Array();
-		$("input[type='checkbox']:checked").each(function() {
-			selectValue.push($(this).val());
-		})
-		console.log(selectValue);
-	});
-
-</script>
-
-<!-- <script type="text/javascript">
-	var x = $("input[name='fruit']").length;
-	var y = $("input[name='fruit']:checked").length;
-</script> -->
 
 </html>
