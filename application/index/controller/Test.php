@@ -23,7 +23,15 @@ class Test extends Controller
      */
     public function captcha()
     {
-        return $this->fetch();
+        return $this -> fetch();
+    }
+
+    /**
+     * 处理多选框相关问题
+     */
+    public function checkbox()
+    {
+        return $this -> fetch();
     }
 
     /**
