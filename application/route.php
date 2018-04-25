@@ -11,7 +11,7 @@
 
 use think\Route;
 
-Route::get('index', 'admin/Index/index'); // 后台首页
+// Route::get('index', 'admin/Index/index'); // 后台首页
 
 return [
 	/**

@@ -49,8 +49,7 @@ return [
     // 应用类库后缀
     'class_suffix'           => false,
     // 控制器类后缀
-    // 'controller_suffix'      => false,
-    'controller_suffix'      => true,
+    'controller_suffix'      => false,
 
     // +----------------------------------------------------------------------
     // | 模块设置
@@ -71,8 +70,7 @@ return [
     // 操作方法后缀
     'action_suffix'          => '',
     // 自动搜索控制器
-    // 'controller_auto_search' => false,
-    'controller_auto_search' => true,
+    'controller_auto_search' => false,
 
     // +----------------------------------------------------------------------
     // | URL设置
@@ -89,8 +87,7 @@ return [
     // URL普通方式参数 用于自动生成
     'url_common_param'       => false,
     // URL参数方式 0 按名称成对解析 1 按顺序解析
-    'url_param_type'         => 0,
-    // 'url_param_type'         => 1,
+    'url_param_type'         => 1,
     // 是否开启路由
     'url_route_on'           => true,
     // 路由使用完整匹配

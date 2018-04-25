@@ -1,20 +1,29 @@
 <?php
+/**
+ * 测试控制器
+ */
 
 namespace app\index\controller;
 
 use think\Controller;
 use think\Request;
 
-class TestController extends Controller
+class Test extends Controller
 {
     /**
      * 显示资源列表
-     *
-     * @return \think\Response
      */
     public function index()
     {
         \Map::getLngLat('北京昌平');
+    }
+
+    /**
+     * 图片验证码测试
+     */
+    public function captcha()
+    {
+        return $this->fetch();
     }
 
     /**

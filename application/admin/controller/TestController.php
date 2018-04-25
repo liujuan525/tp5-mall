@@ -15,6 +15,9 @@ class TestController extends PublicController
     public function index()
     {
         // \Map::getLngLat('北京昌平');
+        
+        \phpmailer\Email::send(1,1,1);
+        return '发送邮件成功';
         return $this->fetch();
     }
 
